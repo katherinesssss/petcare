@@ -1,5 +1,6 @@
 package com.example.petcare
 
+import PetRegistrationScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,7 +17,8 @@ import com.example.petcare.data.repository.OnboardingRepository
 import com.example.petcare.ui.screen.onboarding.OnboardingScreen
 import com.example.petcare.ui.screen.onboarding.OnboardingViewModel
 import com.example.petcare.ui.screen.onboarding.OnboardingViewModelFactory
-import com.example.petcare.ui.screen.registration.PetRegistrationScreen
+import com.example.petcare.ui.screen.registration.PetAgeScreen
+
 import com.example.petcare.ui.theme.PetCareTheme
 
 class MainActivity : ComponentActivity() {
@@ -49,6 +51,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("registration") {
                             PetRegistrationScreen(navController = navController)
+                        }
+                        composable("age") {
+                            PetAgeScreen(navController = navController)
                         }
                         composable("main") {
                             Text("Главный экран PetCare")
