@@ -3,45 +3,56 @@ package com.example.petcare
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.petcare.ui.theme.PetcareTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.petcare.data.repository.OnboardingRepository
+import com.example.petcare.ui.screen.onboarding.OnboardingScreen
+import com.example.petcare.ui.screen.onboarding.OnboardingViewModel
+import com.example.petcare.ui.screen.onboarding.OnboardingViewModelFactory
+import com.example.petcare.ui.theme.PetCareTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            PetcareTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+            PetCareTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    val navController = rememberNavController()
+
+                    // Правильное создание ViewModel через Factory
+                    val onboardingViewModel: OnboardingViewModel = viewModel(
+                        factory = OnboardingViewModelFactory(
+                            repository = OnboardingRepository()
+                        )
                     )
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = "onboarding"
+                    ) {
+                        composable("onboarding") {
+                            OnboardingScreen(
+                                viewModel = onboardingViewModel,
+                                navController = navController
+                            )
+                        }
+                        composable("main") {
+                            // Здесь будет твой главный экран
+                            Text("Главный экран PetCare")
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PetcareTheme {
-        Greeting("Android")
     }
 }
