@@ -44,7 +44,7 @@ fun OnboardingScreen(
 
     LaunchedEffect(uiState.isCompleted) {
         if (uiState.isCompleted) {
-            navController?.navigate("main") {
+            navController?.navigate("registration") {
                 popUpTo("onboarding") { inclusive = true }
             }
         }

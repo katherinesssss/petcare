@@ -16,6 +16,7 @@ import com.example.petcare.data.repository.OnboardingRepository
 import com.example.petcare.ui.screen.onboarding.OnboardingScreen
 import com.example.petcare.ui.screen.onboarding.OnboardingViewModel
 import com.example.petcare.ui.screen.onboarding.OnboardingViewModelFactory
+import com.example.petcare.ui.screen.registration.PetRegistrationScreen
 import com.example.petcare.ui.theme.PetCareTheme
 
 class MainActivity : ComponentActivity() {
@@ -46,8 +47,10 @@ class MainActivity : ComponentActivity() {
                                 navController = navController
                             )
                         }
+                        composable("registration") {
+                            PetRegistrationScreen(navController = navController)
+                        }
                         composable("main") {
-                            // Здесь будет твой главный экран
                             Text("Главный экран PetCare")
                         }
                     }
