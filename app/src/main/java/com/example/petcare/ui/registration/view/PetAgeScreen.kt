@@ -1,15 +1,17 @@
-package com.example.petcare.ui.screen.registration
+package com.example.petcare.ui.registration.view
+
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,13 +24,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.compose.foundation.clickable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.petcare.ui.registration.model.RegistrationEvent
+import com.example.petcare.ui.registration.viewmodel.RegistrationViewModel
 
 @Composable
 fun PetAgeScreen(
-    navController: NavController? = null
+    navController: NavController? = null,
+    viewModel: RegistrationViewModel = viewModel()
 ) {
-    var selectedYears by remember { mutableStateOf<Int?>(null) }
-    var selectedMonths by remember { mutableStateOf<Int?>(null) }
+    val uiState by viewModel.uiState.collectAsState()
 
     Box(
         modifier = Modifier
@@ -36,7 +42,7 @@ fun PetAgeScreen(
             .background(
                 brush = Brush.verticalGradient(
                     0.0f to Color(0xFF165BDA),
-                    0.6f to Color(0xFF165BDA), // Увеличил белую область
+                    0.6f to Color(0xFF165BDA),
                     1.0f to Color(0xFFFFFFFF)
                 )
             )
@@ -47,7 +53,6 @@ fun PetAgeScreen(
                 .padding(horizontal = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Верхняя часть с контентом
             Column(
                 modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -55,7 +60,7 @@ fun PetAgeScreen(
                 Spacer(modifier = Modifier.height(40.dp))
 
                 Text(
-                    text = "Сколько лет вашей кошке?",
+                    text = "Сколько лет вашему питомцу?",
                     style = TextStyle(
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
@@ -67,14 +72,12 @@ fun PetAgeScreen(
 
                 Spacer(modifier = Modifier.height(40.dp))
 
-                // Контейнер для двух колес прокрутки
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    // Колесо лет
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -89,13 +92,12 @@ fun PetAgeScreen(
                         Spacer(modifier = Modifier.height(8.dp))
                         WheelPicker(
                             items = (0..20).toList(),
-                            selectedItem = selectedYears,
-                            onItemSelected = { selectedYears = it },
+                            selectedItem = uiState.selectedYears,
+                            onItemSelected = { viewModel.onEvent(RegistrationEvent.OnYearsSelected(it)) },
                             modifier = Modifier.weight(1f)
                         )
                     }
 
-                    // Колесо месяцев
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -109,23 +111,23 @@ fun PetAgeScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         WheelPicker(
-                            items = (0..11).toList(),
-                            selectedItem = selectedMonths,
-                            onItemSelected = { selectedMonths = it },
+                            items = (0..12).toList(),
+                            selectedItem = uiState.selectedMonths,
+                            onItemSelected = { viewModel.onEvent(RegistrationEvent.OnMonthsSelected(it)) },
                             modifier = Modifier.weight(1f)
                         )
                     }
                 }
             }
 
-            // Нижняя часть с кнопкой (на белом фоне)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
                     onClick = {
-                        navController?.navigate("next_screen")
+                        viewModel.onEvent(RegistrationEvent.OnContinueToDoctors)
+                        navController?.navigate("doctors")
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -134,14 +136,22 @@ fun PetAgeScreen(
                         containerColor = Color(0xFFDCEE7D),
                         contentColor = Color.Black
                     ),
-                    enabled = selectedYears != null && selectedMonths != null
+                    enabled = viewModel.isAgeSelectionValid() && !uiState.isLoading
                 ) {
-                    Text(
-                        text = "Продолжить",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color(0xFF165BDA)
-                    )
+                    if (uiState.isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            color = Color(0xFF165BDA),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text(
+                            text = "Продолжить",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color(0xFF165BDA)
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(40.dp))
@@ -169,7 +179,6 @@ fun WheelPicker(
             .background(Color.White.copy(alpha = 0.2f)),
         contentAlignment = Alignment.Center
     ) {
-        // Линия выбора (как в iOS)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -186,7 +195,6 @@ fun WheelPicker(
                 .fillMaxSize()
                 .padding(vertical = 8.dp)
         ) {
-            // Добавляем отступы сверху и снизу для полной прокрутки
             item { Spacer(modifier = Modifier.height(60.dp)) }
 
             items(items) { item ->
@@ -206,7 +214,7 @@ fun WheelPicker(
             item { Spacer(modifier = Modifier.height(60.dp)) }
         }
 
-        // Градиенты сверху и снизу для эффекта размытия
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -237,9 +245,4 @@ fun WheelPicker(
                 .align(Alignment.BottomCenter)
         )
     }
-}
-
-@Composable
-fun PetAgeScreenPreview() {
-    PetAgeScreen()
 }

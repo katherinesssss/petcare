@@ -1,22 +1,24 @@
 package com.example.petcare.data.repository
 
-class OnboardingRepository {
+import android.content.Context
+import android.content.SharedPreferences
 
-    fun completeOnboarding() {
-        // Логика сохранения прохождения онбординга
+class OnboardingRepository(
+    private val context: Context
+) {
+
+    private val sharedPreferences: SharedPreferences by lazy {
+        context.getSharedPreferences("onboarding_prefs", Context.MODE_PRIVATE)
     }
 
-    fun getOnboardingData(): OnboardingData {
-        return OnboardingData(
-            title = "Добрый день,\nэто PetCare",
-            description = "Мы — сервис заботы для питомцев и их хозяев.",
-            buttonText = "Начать"
-        )
+    private companion object {
+        const val KEY_SHOULD_SHOW_ONBOARDING = "should_show_onboarding"
     }
+
+    suspend fun setShouldShowOnboarding(shouldShow: Boolean) {
+        sharedPreferences.edit().putBoolean(KEY_SHOULD_SHOW_ONBOARDING, shouldShow).apply()
+    }
+
+    val shouldShowOnboarding: Boolean
+        get() = sharedPreferences.getBoolean(KEY_SHOULD_SHOW_ONBOARDING, true)
 }
-
-data class OnboardingData(
-    val title: String,
-    val description: String,
-    val buttonText: String
-)
