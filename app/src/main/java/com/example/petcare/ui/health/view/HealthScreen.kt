@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MonitorHeart
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
-private val Icons.Filled.MonitorHeart: ImageVector
 
 @Composable
 fun HealthScreen(navController: NavController? = null) {
@@ -38,7 +37,7 @@ fun HealthScreen(navController: NavController? = null) {
             modifier = Modifier.padding(16.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.MonitorHeart,
+                imageVector = Icons.Default.FavoriteBorder,
                 contentDescription = "Здоровье",
                 tint = Color(0xFF165BDA),
                 modifier = Modifier.size(64.dp)

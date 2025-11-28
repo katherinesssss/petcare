@@ -16,6 +16,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.petcare.data.repository.OnboardingRepository
+import com.example.petcare.ui.registraion.LoginScreen
+import com.example.petcare.ui.auth.view.RegistrationScreen
+import com.example.petcare.ui.viewmodel.AuthViewModel
 import com.example.petcare.ui.doctors.view.DoctorSelectionScreen
 import com.example.petcare.ui.health.view.HealthScreen
 import com.example.petcare.ui.onboarding.view.OnboardingScreen
@@ -51,6 +54,7 @@ fun MainApp() {
         navController = navController,
         startDestination = "onboarding"
     ) {
+        // Онбординг
         composable("onboarding") {
             val repository = remember { OnboardingRepository(context) }
             val onboardingViewModel: OnboardingViewModel = viewModel(
@@ -63,23 +67,65 @@ fun MainApp() {
                 navController = navController
             )
         }
+
+        // Авторизация
+        composable("auth/registration") {
+            val authViewModel: AuthViewModel = viewModel()
+            RegistrationScreen(
+                viewModel = authViewModel,
+                onNavigateToLogin = { navController.navigate("auth/login") },
+                onRegistrationSuccess = {
+                    navController.navigate("registration") {
+                        popUpTo("auth/registration") { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable("auth/login") {
+            val authViewModel: AuthViewModel = viewModel()
+            LoginScreen(
+                viewModel = authViewModel,
+                onNavigateToRegistration = { navController.navigate("auth/registration") },
+                onLoginSuccess = {
+                    navController.navigate("doctors") {
+                        popUpTo("auth/login") { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        // Регистрация питомца
         composable("registration") {
             PetRegistrationScreen(navController = navController)
         }
+
         composable("age") {
             PetAgeScreen(navController = navController)
         }
+
+        // Главный экран после регистрации
         composable("main") {
-            Text("Главный экран PetCare")
+            MainScreen(navController = navController)
         }
+
+        // Остальные экраны
         composable("doctors") {
             DoctorSelectionScreen(navController = navController)
         }
+
         composable("profile") {
             ProfileScreen(navController = navController)
         }
+
         composable("health") {
             HealthScreen(navController = navController)
         }
     }
+}
+
+@Composable
+fun MainScreen(navController: androidx.navigation.NavHostController) {
+    // Ваш главный экран после авторизации
+    Text("Главный экран PetCare")
 }

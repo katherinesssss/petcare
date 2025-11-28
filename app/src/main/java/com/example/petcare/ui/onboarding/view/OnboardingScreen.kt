@@ -32,7 +32,7 @@ fun OnboardingScreen(
 
     LaunchedEffect(uiState.isCompleted) {
         if (uiState.isCompleted) {
-            navController?.navigate("registration") {
+            navController?.navigate("auth/registration") {
                 popUpTo("onboarding") { inclusive = true }
             }
         }
@@ -97,8 +97,15 @@ fun OnboardingScreen(
 
                 Spacer(modifier = Modifier.height(40.dp))
 
+                // Основная кнопка "Начать" - ведет на регистрацию
                 Button(
-                    onClick = { viewModel.onEvent(OnboardingEvent.OnStartButtonClick) },
+                    onClick = {
+                        viewModel.onEvent(OnboardingEvent.OnStartButtonClick)
+                        // Дублируем навигацию на случай если isCompleted не сработает
+                        navController?.navigate("auth/registration") {
+                            popUpTo("onboarding") { inclusive = true }
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
@@ -121,6 +128,25 @@ fun OnboardingScreen(
                             fontWeight = FontWeight.Medium
                         )
                     }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Кнопка "Уже есть аккаунт" - ведет на вход
+                TextButton(
+                    onClick = {
+                        navController?.navigate("auth/login") {
+                            popUpTo("onboarding") { inclusive = true }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Уже есть аккаунт? Войти",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White
+                    )
                 }
             }
 
