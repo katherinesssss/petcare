@@ -137,12 +137,19 @@ private fun DoctorSelectionContent(
                     CircularProgressIndicator(color = Color.White)
                 }
             } else {
+                // ИСПРАВЛЕНИЕ: Показываем всех врачей когда нет поиска, отфильтрованных - при поиске
+                val doctorsToShow = if (uiState.searchQuery.isEmpty()) {
+                    uiState.doctors // Показываем всех врачей
+                } else {
+                    uiState.filteredDoctors // Показываем отфильтрованных при поиске
+                }
+
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
                 ) {
-                    if (uiState.filteredDoctors.isEmpty()) {
+                    if (doctorsToShow.isEmpty()) {
                         item {
                             Column(
                                 modifier = Modifier
@@ -170,7 +177,7 @@ private fun DoctorSelectionContent(
                             }
                         }
                     } else {
-                        items(uiState.filteredDoctors) { doctor ->
+                        items(doctorsToShow) { doctor ->
                             DoctorItem(
                                 doctor = doctor,
                                 onDoctorSelected = onDoctorSelected
@@ -254,7 +261,7 @@ private fun DoctorItem(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = doctor.experience,
+                    text = "${doctor.experienceYears} лет опыта",
                     style = TextStyle(
                         fontSize = 12.sp,
                         color = Color(0xFF165BDA)

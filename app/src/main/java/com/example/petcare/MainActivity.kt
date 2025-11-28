@@ -18,9 +18,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.petcare.data.repository.OnboardingRepository
 import com.example.petcare.ui.registraion.LoginScreen
 import com.example.petcare.ui.auth.view.RegistrationScreen
+import com.example.petcare.ui.doctors.view.AppointmentsScreen
+import com.example.petcare.ui.doctors.view.DoctorDetailScreen
 import com.example.petcare.ui.viewmodel.AuthViewModel
 import com.example.petcare.ui.doctors.view.DoctorSelectionScreen
-import com.example.petcare.ui.health.view.HealthScreen
+import com.example.petcare.ui.health.view.PetHealthScreen // ПРАВИЛЬНЫЙ ИМПОРТ
+import com.example.petcare.ui.main.view.MainScreen
 import com.example.petcare.ui.onboarding.view.OnboardingScreen
 import com.example.petcare.ui.onboarding.viewmodel.OnboardingViewModel
 import com.example.petcare.ui.onboarding.viewmodel.OnboardingViewModelFactory
@@ -119,13 +122,22 @@ fun MainApp() {
         }
 
         composable("health") {
-            HealthScreen(navController = navController)
+            PetHealthScreen(navController = navController) // ИСПРАВЛЕНО
+        }
+
+        composable("doctor_details/{doctorId}") { backStackEntry ->
+            val doctorId = backStackEntry.arguments?.getString("doctorId")
+            DoctorDetailScreen(
+                navController = navController,
+                doctorId = doctorId
+            )
+        }
+        composable("appointments") {
+            AppointmentsScreen()
+        }
+        composable("main") {
+            MainScreen(navController = navController)
         }
     }
 }
 
-@Composable
-fun MainScreen(navController: androidx.navigation.NavHostController) {
-    // Ваш главный экран после авторизации
-    Text("Главный экран PetCare")
-}

@@ -12,6 +12,7 @@ foundation = "1.9.4"
 material = "1.13.0"
 firebaseCrashlyticsBuildtools = "3.0.6"
 foundationVersion = "1.9.5"
+uiText = "1.9.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +33,7 @@ androidx-compose-foundation = { group = "androidx.compose.foundation", name = "f
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
 androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundationVersion" }
+androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiText" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

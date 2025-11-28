@@ -1,18 +1,19 @@
+// Doctor.kt
 package com.example.petcare.ui.doctors.model
-
-data class DoctorUiState(
-    val allDoctors: List<Doctor> = emptyList(),
-    val filteredDoctors: List<Doctor> = emptyList(),
-    val searchQuery: String = "",
-    val isLoading: Boolean = false,
-    val error: String? = null
-)
 
 data class Doctor(
     val id: String,
     val name: String,
     val specialization: String,
-    val experience: String,
+    val experienceYears: Int, // Оставляем только это поле
     val rating: Double,
-    val reviews: Int
+    val reviews: Int,
+    val imageUrl: String? = null,
+    val education: String = "",
+    val description: String = "",
+    val languages: List<String> = emptyList(),
+    val services: List<String> = emptyList(),
+    val price: String = "",
+    val availableSlots: List<String> = emptyList(),
+    val location: String = ""
 )
