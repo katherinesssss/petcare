@@ -74,7 +74,6 @@ fun MainScreen(navController: NavHostController) {
                 .fillMaxSize()
                 .padding(bottom = 70.dp)
         ) {
-            // Верхняя часть с заголовком - фиксированная высота
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -100,8 +99,6 @@ fun MainScreen(navController: NavHostController) {
                     textAlign = TextAlign.Center
                 )
             }
-
-            // Белая карточка с записями - занимает оставшееся пространство
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -327,7 +324,7 @@ private fun TabBar(
         )
 
         TabItem(
-            icon = Icons.Default.Favorite,
+            icon = Icons.Default.Edit,
             title = "Здоровье",
             isSelected = currentScreen == "health",
             onClick = {
