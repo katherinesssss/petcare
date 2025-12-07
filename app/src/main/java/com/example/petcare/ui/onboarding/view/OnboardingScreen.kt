@@ -58,7 +58,7 @@ fun OnboardingScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             Image(
-                painter = painterResource(id = R.drawable.bg_onboarding),
+                painter = painterResource(id = R.drawable.cat),
                 contentDescription = "Логотип PetCare",
                 modifier = Modifier.size(300.dp),
                 contentScale = ContentScale.Fit

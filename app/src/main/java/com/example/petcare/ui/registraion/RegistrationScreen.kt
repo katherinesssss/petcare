@@ -58,7 +58,7 @@ fun RegistrationScreen(
 
             // Логотип или иконка
             Image(
-                painter = painterResource(id = R.drawable.bg_onboarding),
+                painter = painterResource(id = R.drawable.cat),
                 contentDescription = "Регистрация",
                 modifier = Modifier.size(200.dp),
                 contentScale = ContentScale.Fit

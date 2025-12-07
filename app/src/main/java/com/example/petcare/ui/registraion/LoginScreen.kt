@@ -58,7 +58,7 @@ fun LoginScreen(
 
             // Логотип или иконка
             Image(
-                painter = painterResource(id = R.drawable.bg_onboarding),
+                painter = painterResource(id = R.drawable.cat),
                 contentDescription = "Вход в систему",
                 modifier = Modifier.size(200.dp),
                 contentScale = ContentScale.Fit
